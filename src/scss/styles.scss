@@ -1,0 +1,220 @@
+@import "variables";
+
+body {
+  margin: 0;
+  background-color: $color-body;
+  color: $color-body-text;
+  padding: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: $font-size;
+}
+
+.label-error {
+  color: $color-error;
+}
+
+.border-error {
+  border: 1px solid $color-error;
+}
+
+.card {
+  background-color: $color-card;
+  color: $color-card-text;
+  border-radius: $border-radius-card;
+}
+
+.container {
+  padding: $padding;
+}
+
+m {
+  margin: $margin;
+}
+
+.mt {
+  margin-top: $margin;
+}
+
+.ml {
+  margin-left: $margin;
+}
+
+.mr {
+  margin-right: $margin;
+}
+
+.mb {
+  margin-bottom: $margin;
+}
+
+.mm {
+  margin: $margin-label-button;
+}
+
+.mtm {
+  margin-top: $margin-label-button;
+}
+
+.mlm {
+  margin-left: $margin-label-button;
+}
+
+.mrm {
+  margin-right: $margin-label-button;
+}
+
+.mbm {
+  margin-bottom: $margin-label-button;
+}
+
+input {
+  border-radius: $border-radius-input;
+  border: 1px solid $color-border-input;
+  height: 45px;
+  font-size: $font-size;
+  padding: 0 $padding;
+
+  &:focus {
+    outline: 0;
+  }
+
+}
+
+.select {
+  border-radius: $border-radius-input;
+  border: 1px solid $color-border-input;
+  background-color: $color-card;
+  height: 45px;
+  font-size: $font-size;
+  padding: 0 $padding;
+
+  &:focus {
+    outline: 0;
+  }
+
+}
+
+.select-menu {
+  border-radius: 5px;
+  border: none;
+  width: auto;
+  height: auto;
+  padding: 5px 10px;
+  background-color: $color-card;
+  appearance: none;
+  cursor: pointer;
+  font-size: 16px;
+
+  &:focus {
+    outline: 0;
+  }
+
+}
+
+
+button {
+  border-radius: $border-radius-input;
+  cursor: pointer;
+  border: none;
+  font-weight: bold;
+  height: 45px;
+  font-size: $font-size;
+  padding: 0 $padding;
+}
+
+.background-color-primary {
+  background-color: $color-primary;
+  color: $color-primary-text;
+}
+
+.background-color-secondary {
+  background-color: $color-secondary;
+  color: $color-secondary-text;
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th, td {
+    padding: 12px;
+    border-bottom: 1px solid $color-table-header;
+    text-align: left;
+  }
+
+  th {
+    background: $color-table-header;
+    font-weight: bold;
+  }
+}
+
+.scroll {
+  overflow: auto;
+}
+
+.row {
+  // display: flex;
+}
+
+.col {
+  display: flex;
+}
+
+.title {
+  font-weight: bold;
+}
+
+.header {
+  border-bottom: 1px solid $color-table-header;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  span {
+    font-weight: bold;
+  }
+
+}
+
+.modal {
+  background-color: rgb(0, 0, 0, .5);
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal-show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.border-left {
+  border-left: 1px solid $color-border-input;
+}
+
+.border-right {
+  border-right: 1px solid $color-border-input;
+}
+
+.border-top {
+  border-top: 1px solid $color-border-input;
+}
+
+.border-bottom {
+  border-bottom: 1px solid $color-border-input;
+}
+
+@media only screen and (max-width: #{$media-query-tablet}) {
+  .col {
+    flex-direction: column;
+  }
+}

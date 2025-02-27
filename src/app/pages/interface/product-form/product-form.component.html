@@ -1,0 +1,171 @@
+<div style="display: flex; align-content: center; justify-content: center;">
+
+  <form [formGroup]="formGroup" (ngSubmit)="maintenance()">
+    <div class="card">
+
+      <div class="container header">
+        <span>Formulario de Registro</span>
+      </div>
+
+      <div class="container">
+
+
+        <div class="col">
+
+          <div class="mb mr">
+            <div class="mbm">
+              <span class="title">ID (*)</span>
+            </div>
+            <div>
+              <input type="text"
+                     [formControlName]="'id'"
+                     [class.border-error]="formGroup.get('id')?.errors && formGroup.get('id')?.touched">
+              <div style="width: 172px">
+                @if (formGroup.get('id')?.errors && formGroup.get('id')?.touched) {
+                  @if (formGroup.get('id')?.errors?.['required']) {
+                    <span class="label-error">EL ID es requerido</span>
+                  }
+                  @if (formGroup.get('id')?.errors?.['minlength']) {
+                    <span class="label-error">Debe tener al menos 3 caracteres</span>
+                  }
+                  @if (formGroup.get('id')?.errors?.['maxlength']) {
+                    <span class="label-error">EL ID debe tener máximo 10 caracteres</span>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="mb mr">
+            <div class="mbm">
+              <span class="title">Nombre del producto (*)</span>
+            </div>
+            <div>
+              <input type="text"
+                     [formControlName]="'name'"
+                     [class.border-error]="formGroup.get('name')?.errors && formGroup.get('name')?.touched">
+              <div style="width: 172px">
+                @if (formGroup.get('name')?.errors && formGroup.get('name')?.touched) {
+                  @if (formGroup.get('name')?.errors?.['required']) {
+                    <span class="label-error">El nombre del producto es requerido</span>
+                  }
+                  @if (formGroup.get('name')?.errors?.['minlength']) {
+                    <span class="label-error">El nombre del producto debe tener al menos 5 caracteres</span>
+                  }
+                  @if (formGroup.get('name')?.errors?.['maxlength']) {
+                    <span class="label-error">El nombre del producto debe tener máximo 100 caracteres</span>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col">
+          <div class="mb mr">
+            <div class="mbm">
+              <span class="title">Descripción (*)</span>
+            </div>
+            <div>
+              <input type="text"
+                     [formControlName]="'description'"
+                     [class.border-error]="formGroup.get('description')?.errors && formGroup.get('description')?.touched">
+              <div style="width: 172px">
+                @if (formGroup.get('description')?.errors && formGroup.get('description')?.touched) {
+                  @if (formGroup.get('description')?.errors?.['required']) {
+                    <span class="label-error">La descripción es requerido</span>
+                  }
+                  @if (formGroup.get('description')?.errors?.['minlength']) {
+                    <span class="label-error">La descripción debe tener al menos 10 caracteres</span>
+                  }
+                  @if (formGroup.get('description')?.errors?.['maxlength']) {
+                    <span class="label-error">La descripción debe tener máximo 200 caracteres</span>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="mb mr">
+            <div class="mbm">
+              <span class="title">Logo (*)</span>
+            </div>
+            <div>
+              <input type="text"
+                     [formControlName]="'logo'"
+                     [class.border-error]="formGroup.get('logo')?.errors && formGroup.get('logo')?.touched">
+              <div style="width: 172px">
+                @if (formGroup.get('logo')?.errors && formGroup.get('logo')?.touched) {
+                  @if (formGroup.get('logo')?.errors?.['required']) {
+                    <span class="label-error">EL logo es requerido</span>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="col">
+
+          <div class="mb mr">
+            <div class="mbm">
+              <span class="title">Fecha de liberación (*)</span>
+            </div>
+            <div>
+              <input style="width: 150px"
+                     type="date"
+                     [formControlName]="'date_release'"
+                     [class.border-error]="formGroup.get('date_release')?.errors && formGroup.get('date_release')?.touched"
+                     (change)="onDateReleaseChange($event)">
+              <div style="width: 172px">
+                @if (formGroup.get('date_release')?.errors && formGroup.get('date_release')?.touched) {
+                  @if (formGroup.get('date_release')?.errors?.['required']) {
+                    <span class="label-error">La fecha de liberación es requerido</span>
+                  }
+                  @if (formGroup.get('date_release')?.errors?.['dateRelease']) {
+                    <span class="label-error">La fecha debe ser igual o mayor a la fecha actual</span>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="mb mr">
+            <div class="mbm">
+              <span class="title">Fecha de reestauración (*)</span>
+            </div>
+            <div>
+              <input style="width: 150px"
+                     type="date"
+                     [formControlName]="'date_revision'"
+                     [class.border-error]="formGroup.get('date_revision')?.errors && formGroup.get('date_revision')?.touched">
+              <div style="width: 172px">
+                @if (formGroup.get('date_revision')?.errors && formGroup.get('date_revision')?.touched) {
+                  @if (formGroup.get('date_revision')?.errors?.['required']) {
+                    <span class="label-error">La fecha de reestauración es requerido</span>
+                  }
+                }
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="display: flex; align-content: center; justify-content: center;">
+          <button type="reset" class="mr background-color-secondary">
+            <span>Reiniciar</span>
+          </button>
+          <button type="submit" class="background-color-primary">
+            <span>Enviar</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </form>
+
+</div>

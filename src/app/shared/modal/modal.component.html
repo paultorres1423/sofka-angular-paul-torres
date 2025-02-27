@@ -1,0 +1,23 @@
+<div class="modal" [ngClass]="{'modal-show': modalService.showModal}">
+  <div class="card mt" style="width: 400px;">
+    <div style="padding: 20px 20px 20px 20px;">
+      <span>{{ modalService.message }}</span>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; padding: 20px 0" class="border-top">
+      @if (!modalService.notificacion) {
+        <div>
+          <button class="background-color-secondary" (click)="modalService.cancel()" style="margin-right: 20px">Cancelar
+          </button>
+          <button class="background-color-primary" (click)="modalService.confirm()">Confirmar</button>
+        </div>
+      }
+      @if (modalService.notificacion) {
+        <div>
+          <button class="background-color-primary"
+                  (click)="modalService.showModal = false; modalService.notificacion = false;">Aceptar
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+</div>
