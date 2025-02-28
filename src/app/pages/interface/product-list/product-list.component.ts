@@ -90,7 +90,7 @@ export class ProductListComponent {
    * @param product Producto a eliminar.
    */
   private async deleteRecord(product: any) {
-    const confirmed = await this.modalService.openModal(`Estás seguro de eliminar este producto ${product.name}`);
+    const confirmed = await this.modalService.openModal(`¿Estás seguro de eliminar este producto ${product.name}?`);
     if (confirmed) {
       this.productApplication.delete(product.id).subscribe(() => {
         this.list().then();

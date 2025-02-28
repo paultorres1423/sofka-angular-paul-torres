@@ -102,10 +102,21 @@ export class ProductFormComponent implements OnInit {
       if (!control.value) {
         return null;
       }
-      const inputDate = new Date(control.value);
+      const inputDate = new Date(control.value + 'T00:00:00'); // Ajustar la hora a medianoche para evitar problemas de zona horaria
       const currentDate = new Date();
-      const inputDateString = inputDate.toISOString().split('T')[0];
-      const currentDateString = currentDate.toISOString().split('T')[0];
+      const inputDateString = inputDate.toLocaleDateString('es-EC', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).split('/').reverse().join('-');
+      const currentDateString = currentDate.toLocaleDateString('es-EC', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      }).split('/').reverse().join('-');
+
+      console.log('inputDateString:', inputDateString);
+      console.log('currentDateString:', currentDateString);
       return inputDateString >= currentDateString ? null : {'dateRelease': true};
     };
   }
