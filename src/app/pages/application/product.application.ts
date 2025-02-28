@@ -19,9 +19,9 @@ export class ProductApplication {
 
   /**
    * Lista todos los productos
-   * @returns {Observable<{ productDomain: ProductDomain[] }>} Observable con la lista de productos
+   * @returns {Observable<{ data: [] }>} Un observable que emite una lista de datos.
    */
-  list(): Observable<{ productDomain: ProductDomain[] }> {
+  list(): Observable<{ data: [] }> {
     return this.productRepository.list();
   }
 

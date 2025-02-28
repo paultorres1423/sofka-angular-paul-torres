@@ -7,100 +7,134 @@ import {of} from 'rxjs';
 import {ProductDomain, ProductProperties} from '../../domain/product.domain';
 
 describe('ProductFormComponent', () => {
-    let component: ProductFormComponent;
-    let fixture: ComponentFixture<ProductFormComponent>;
-    let productApplicationSpy: jasmine.SpyObj<ProductApplication>;
 
-    const mockProductProperties: ProductProperties = {
-        id: '1',
-        name: 'Producto Test',
-        description: 'Descripción Test',
-        logo: 'logo.png',
-        date_release: new Date(),
-        date_revision: new Date()
-    };
+  let productFormComponent: ProductFormComponent;
+  let componentFixture: ComponentFixture<ProductFormComponent>;
+  let productApplicationSpyObj: jasmine.SpyObj<ProductApplication>;
 
-    const mockProductDomain = new ProductDomain(mockProductProperties);
+  const productProperties: ProductProperties = {
+    id: '001',
+    name: 'Nombre producto',
+    description: 'Descripción producto',
+    logo: 'Logo 1',
+    date_release: new Date(),
+    date_revision: new Date()
+  };
+  const productDomain = new ProductDomain(productProperties);
 
-    beforeEach(async () => {
-        productApplicationSpy = jasmine.createSpyObj('ProductApplication', ['create', 'update']);
-        productApplicationSpy.create.and.returnValue(of({
-            message: 'Creado',
-            data: mockProductDomain
-        }));
-        productApplicationSpy.update.and.returnValue(of({
-            message: 'Actualizado',
-            data: mockProductDomain
-        }));
+  beforeEach(async () => {
+    productApplicationSpyObj = jasmine.createSpyObj('ProductApplication', ['create', 'update']);
+    productApplicationSpyObj.create.and.returnValue(of({
+      message: 'Creado',
+      data: productDomain
+    }));
+    productApplicationSpyObj.update.and.returnValue(of({
+      message: 'Actualizado',
+      data: productDomain
+    }));
 
-        await TestBed.configureTestingModule({
-            imports: [ReactiveFormsModule],
-            providers: [
-                {provide: ProductApplication, useValue: productApplicationSpy},
-                {
-                    provide: ActivatedRoute,
-                    useValue: {
-                        snapshot: {
-                            params: {typeOfMaintenance: 'create'}
-                        }
-                    }
-                }
-            ]
-        }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule],
+      providers: [
+        {provide: ProductApplication, useValue: productApplicationSpyObj},
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              params: {typeOfMaintenance: 'create'}
+            }
+          }
+        }
+      ]
+    }).compileComponents();
 
-        fixture = TestBed.createComponent(ProductFormComponent);
-        component = fixture.componentInstance;
-        fixture.detectChanges();
+    componentFixture = TestBed.createComponent(ProductFormComponent);
+    productFormComponent = componentFixture.componentInstance;
+    componentFixture.detectChanges();
+  });
+
+  it('debe crear el componente', () => {
+    expect(productFormComponent).toBeTruthy();
+  });
+
+  it('debe validar el formulario correctamente', () => {
+    expect(productFormComponent.formGroup.valid).toBeFalsy();
+    productFormComponent.formGroup.patchValue({
+      id: '123',
+      name: 'Producto Test',
+      description: 'Descripción de prueba detallada',
+      logo: 'logo.png',
+      date_release: new Date().toISOString().split('T')[0],
+      date_revision: new Date().toISOString().split('T')[0]
     });
+    expect(productFormComponent.formGroup.valid).toBeTruthy();
+  });
 
-    it('debe crear el componente', () => {
-        expect(component).toBeTruthy();
+  it('debe actualizar un producto existente', async () => {
+    productFormComponent.typeOfMaintenance = 'update';
+    productFormComponent.id = 'test-id';
+    productFormComponent.formGroup.patchValue({
+      id: 'test-id',
+      name: 'Test Product',
+      description: 'Test Description',
+      logo: 'test-logo',
+      date_release: new Date(),
+      date_revision: new Date()
     });
+    await productFormComponent.maintenance();
+    expect(productApplicationSpyObj.update).toHaveBeenCalled();
+  });
 
-    it('debe validar el formulario correctamente', () => {
-        expect(component.formGroup.valid).toBeFalsy();
-
-        component.formGroup.patchValue({
-            id: '123',
-            name: 'Producto Test',
-            description: 'Descripción de prueba detallada',
-            logo: 'logo.png',
-            date_release: new Date().toISOString().split('T')[0],
-            date_revision: new Date().toISOString().split('T')[0]
-        });
-
-        expect(component.formGroup.valid).toBeTruthy();
+  it('debe crear un nuevo producto', async () => {
+    productFormComponent.typeOfMaintenance = 'create';
+    productFormComponent.formGroup.setValue({
+      id: 'test-id',
+      name: 'Test Product',
+      description: 'Test Description',
+      logo: 'test-logo',
+      date_release: new Date(),
+      date_revision: new Date()
     });
+    await productFormComponent.maintenance();
+    expect(productApplicationSpyObj.create).toHaveBeenCalled();
+  });
 
-    it('debe actualizar date_revision al cambiar date_release', () => {
-        const dateRelease = new Date();
-        const event = {
-            target: {value: dateRelease.toISOString().split('T')[0]}
-        } as any;
+  it('debe mostrar errores cuando el formulario es inválido', () => {
+    productFormComponent.maintenance();
+    expect(productFormComponent.formGroup.touched).toBeTrue();
+    expect(productApplicationSpyObj.create).not.toHaveBeenCalled();
+  });
 
-        component.onDateReleaseChange(event);
+  it('debe validar fecha de lanzamiento correctamente', () => {
+    const dateRelease = productFormComponent.formGroup.get('date_release');
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 1);
+    dateRelease?.setValue(futureDate);
+    expect(dateRelease?.errors).toBeNull();
 
-        const dateRevision = component.formGroup.get('date_revision')?.value;
-        expect(dateRevision).toBeTruthy();
-    });
+    // Prueba fecha pasada
+    const pastDate = new Date();
+    pastDate.setDate(pastDate.getDate() - 1);
+    dateRelease?.setValue(pastDate);
+    expect(dateRelease?.errors?.['dateRelease']).toBeTruthy();
 
-    it('debe crear un nuevo producto', async () => {
-        component.typeOfMaintenance = 'create';
-        component.formGroup.setValue({
-            id: 'test-id',
-            name: 'Test Product',
-            description: 'Test Description',
-            logo: 'test-logo',
-            date_release: new Date(),
-            date_revision: new Date()
-        });
-        await component.maintenance();
-        expect(productApplicationSpy.create).toHaveBeenCalled();
-    });
+    // Prueba sin valor
+    dateRelease?.setValue(null);
+    expect(dateRelease?.errors?.['dateRelease']).toBeFalsy();
+  });
 
-    it('debe mostrar errores cuando el formulario es inválido', () => {
-        component.maintenance();
-        expect(component.formGroup.touched).toBeTrue();
-        expect(productApplicationSpy.create).not.toHaveBeenCalled();
-    });
+  it('debe calcular fecha de revisión al cambiar fecha de lanzamiento', () => {
+    const dateRelease = new Date();
+    const event = {
+      target: {
+        value: dateRelease.toISOString().split('T')[0]
+      }
+    } as any;
+    productFormComponent.onDateReleaseChange(event);
+    const expectedRevisionDate = new Date(dateRelease);
+    expectedRevisionDate.setFullYear(dateRelease.getFullYear() + 1);
+    const actualRevisionDate = productFormComponent.formGroup.get('date_revision')?.value;
+    expect(actualRevisionDate).toBe(expectedRevisionDate.toISOString().split('T')[0]);
+  });
+
 });

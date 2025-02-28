@@ -8,9 +8,9 @@ export interface IProductRepository {
 
   /**
    * Lista todos los productos.
-   * @returns {Observable<{ productDomain: ProductDomain[] }>} Un observable que emite una lista de productos.
+   * @returns {Observable<{ data: [] }>} Un observable que emite una lista de datos.
    */
-  list(): Observable<{ productDomain: ProductDomain[] }>;
+  list(): Observable<{ data: [] }>;
 
   /**
    * Valida el ID de un producto.

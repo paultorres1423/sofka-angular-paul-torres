@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -24,41 +24,17 @@ import {TypeOfMaintenance} from '../../../common/data-types';
   templateUrl: './product-form.component.html',
   styles: ``
 })
-export class ProductFormComponent {
+export class ProductFormComponent implements OnInit {
 
-  typeOfMaintenance: TypeOfMaintenance;
+  typeOfMaintenance!: TypeOfMaintenance;
   id!: string;
-
-  /**
-   * Formulario reactivo para el producto
-   */
-  formGroup: FormGroup = new FormGroup({
-    id: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(10)
-    ]),
-    name: new FormControl('', [
-      Validators.required,
-      Validators.minLength(5),
-      Validators.maxLength(100)
-    ]),
-    description: new FormControl('', [
-      Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(200)
-    ]),
-    logo: new FormControl('', [
-      Validators.required,
-    ]),
-    date_release: new FormControl('', [
-      Validators.required,
-      this.validateDateRelease()
-    ]),
-    date_revision: new FormControl('', [
-      Validators.required,
-    ]),
-  });
+  formGroup!: FormGroup;
+  minlengthId = 3;
+  maxlengthId = 10;
+  minlengthName = 5;
+  maxlengthName = 100;
+  minlengthDescription = 10;
+  maxlengthDescription = 200;
 
   /**
    * @param productApplication Servicio de aplicacion de producto
@@ -68,6 +44,46 @@ export class ProductFormComponent {
     private readonly productApplication: ProductApplication,
     private readonly activatedRoute: ActivatedRoute,
   ) {
+    this.loadForm();
+  }
+
+  /**
+   * Formulario reactivo para el producto
+   */
+  loadForm() {
+    this.formGroup = new FormGroup({
+      id: new FormControl('', [
+        Validators.required,
+        Validators.minLength(this.minlengthId),
+        Validators.maxLength(this.maxlengthId)
+      ]),
+      name: new FormControl('', [
+        Validators.required,
+        Validators.minLength(this.minlengthName),
+        Validators.maxLength(this.maxlengthName)
+      ]),
+      description: new FormControl('', [
+        Validators.required,
+        Validators.minLength(this.minlengthDescription),
+        Validators.maxLength(this.maxlengthDescription)
+      ]),
+      logo: new FormControl('', [
+        Validators.required,
+      ]),
+      date_release: new FormControl('', [
+        Validators.required,
+        this.validateDateRelease()
+      ]),
+      date_revision: new FormControl('', [
+        Validators.required,
+      ]),
+    });
+  }
+
+  /**
+   * Inicializa el componente
+   */
+  ngOnInit(): void {
     this.formGroup.get('date_revision')?.disable();
     this.typeOfMaintenance = this.activatedRoute.snapshot.params['typeOfMaintenance'];
     if (this.typeOfMaintenance === 'update') {

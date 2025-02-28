@@ -22,10 +22,10 @@ export class ProductInfrastructure implements IProductRepository {
 
   /**
    * Obtiene una lista de productos.
-   * @returns Observable con un objeto que contiene un array de ProductDomain.
+   * @returns Observable con un objeto que contiene un array.
    */
-  list(): Observable<{ productDomain: ProductDomain[] }> {
-    return this.httpClient.get<{ productDomain: ProductDomain[] }>(`/bp/products`);
+  list(): Observable<{ data: [] }> {
+    return this.httpClient.get<{ data: [] }>(`/bp/products`);
   }
 
   /**

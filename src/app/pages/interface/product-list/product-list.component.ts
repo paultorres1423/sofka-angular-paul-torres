@@ -41,10 +41,9 @@ export class ProductListComponent {
    */
   async list() {
     this.productApplication.list().subscribe((response: any) => {
-        this.products = response;
-        this.filterProducts();
-      }
-    )
+      this.products = response;
+      this.filterProducts();
+    });
   }
 
   /**
