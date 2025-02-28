@@ -13,50 +13,52 @@
 
 <div class="card container">
 
-  <div class="scroll mb" style="display: flex; align-content: center; justify-content: center;">
-    <table>
-      <thead>
-      <tr>
-        <th>Logo</th>
-        <th>Nombre del producto</th>
-        <th>Descripción</th>
-        <th>Fecha de liberación</th>
-        <th>Fecha de reestauración</th>
-        <th>ID</th>
-        <th></th>
-      </tr>
-      </thead>
-      <tbody>
-        @for (product of filteredProducts.data; track product; let index = $index) {
-          @if (index <= this.numberRecords) {
-            <tr>
-              <td>
-                <div
-                  style="background-color: #495057; color: white; width: 50px; height: 50px; border-radius: 50px; display: flex; align-items: center; justify-content: center">
-                  {{ product.logo }}
-                </div>
-              </td>
-              <td>{{ product.name }}</td>
-              <td>{{ product.description }}</td>
-              <td>{{ product.date_release }}</td>
-              <td>{{ product.date_revision }}</td>
-              <td>{{ product.id }}</td>
+  <div class="mb" style="display: flex; align-content: center; justify-content: center; width: 100%">
+    <div class="scroll" style="width: 100%">
+      <table>
+        <thead>
+        <tr>
+          <th>Logo</th>
+          <th>Nombre del producto</th>
+          <th>Descripción</th>
+          <th>Fecha de liberación</th>
+          <th>Fecha de reestauración</th>
+          <th>ID</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          @for (product of filteredProducts.data; track product; let index = $index) {
+            @if (index <= this.numberRecords) {
+              <tr>
+                <td>
+                  <div
+                    style="background-color: #495057; color: white; width: 50px; height: 50px; border-radius: 50px; display: flex; align-items: center; justify-content: center">
+                    {{ product.logo }}
+                  </div>
+                </td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.date_release }}</td>
+                <td>{{ product.date_revision }}</td>
+                <td>{{ product.id }}</td>
 
-              <td>
-                <select (change)="onActionChange($event, product)" class="select-menu">
-                  <option value="" disabled selected hidden>
-                    &#8942; <!-- Carácter Unicode para el icono de puntos suspensivos verticales -->
-                  </option>
-                  <option value="edit">Editar</option>
-                  <option value="delete">Eliminar</option>
-                </select>
-              </td>
+                <td>
+                  <select (change)="onActionChange($event, product)" class="select-menu">
+                    <option value="" disabled selected hidden>
+                      &#8942; <!-- Carácter Unicode para el icono de puntos suspensivos verticales -->
+                    </option>
+                    <option value="edit">Editar</option>
+                    <option value="delete">Eliminar</option>
+                  </select>
+                </td>
 
-            </tr>
+              </tr>
+            }
           }
-        }
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <div style="display: flex; align-content: center; justify-content: space-between;">
